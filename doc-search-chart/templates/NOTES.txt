@@ -1,0 +1,1 @@
+Please be patient while {{ .Release.Name }} starts up. It might take a couple of minutes!

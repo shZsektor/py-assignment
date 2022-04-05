@@ -1,0 +1,50 @@
+# Default values for doc-search-chart.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+replicaCount: 1
+
+image:
+  repository: doc-search
+  pullPolicy: Never #Local test on minikube. Didn't pull image from a remote repository
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: "latest"
+
+nameOverride: ""
+fullnameOverride: ""
+
+podAnnotations: {}
+
+service:
+  type: LoadBalancer
+  port: 8080
+
+resources: 
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  limits:
+    cpu: 100m
+    memory: 128Mi
+  requests:
+    cpu: 100m
+    memory: 128Mi
+
+#Since we are not expecting long delays of unresponsivness after the initial start-up delay of the service we leave both linenessProbe and readinessProbe
+#Checks as default values.
+livenessProbe:
+  httpGet:
+    path: /
+    port: 8080
+readinessProbe:
+  httpGet:
+    path: /
+    port: 8080
+startupProbe:
+  initialDelaySeconds: 60 # Since we are accounting for slow start-up we would like to wait an equally lengthy time before probing.
+  periodSeconds: 15 #Check every 15 seconds between probes
+  failureThreshold: 7 # If the probe fails more than 7 times. Over the course of (initialDelaySeconds + periodSeconds * failureThreshold) (60 + 15 * 7) then we restart pod
+  httpGet:
+    path: /
+    port: 8080
