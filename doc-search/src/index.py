@@ -1,5 +1,8 @@
 import os
 import codecs
+from prometheus_client import Summary as prom_summary
+
+REQUEST_TIME = prom_summary('request_processing_seconds','latency of requests')
 
 class Index:
     # builds a naive, in efficient index
@@ -21,6 +24,7 @@ class Index:
 
         return Index(docs=docs)
     
+    @REQUEST_TIME.time()
     def search(self, phrase):
         words = phrase.split()
         results = set()
