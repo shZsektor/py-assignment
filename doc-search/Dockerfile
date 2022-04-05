@@ -1,4 +1,7 @@
-FROM python:3.10-slim-bullseye
+FROM python:3.10-alpine3.15
+
+#Since the concern is commits on (.py) files then moving both samples and requirements to the upper layers of the docker file
+#Will help a great deal in utilizing the cache of docker
 COPY samples /data
 
 COPY requirements.txt /app/
