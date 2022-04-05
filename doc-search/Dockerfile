@@ -13,4 +13,4 @@ COPY src /app
 WORKDIR /app
 EXPOSE 8080
 ENTRYPOINT [ "python3" ]
-CMD [ "__init__.py", "/data" ]
+CMD [ "__init__.py", "/data","0.0.0.0" ]
